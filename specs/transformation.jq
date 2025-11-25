@@ -13,7 +13,20 @@
     if type == "object" and has("$ref") and ."$ref" == "#/definitions/msaspec.Error" then ."$ref" = "#/definitions/msa.APIError" else . end
     | if type == "object" and has("$ref") and ."$ref" == "#/definitions/msaspec.MetaInfo" then ."$ref" = "#/definitions/msa.MetaInfo" else . end
     )
-  | del(.definitions."msaspec.Error")
+  # Rename msaspec.Error to msa.APIError
+  | if .definitions."msa.APIError" then
+      del(.definitions."msaspec.Error")
+    else
+      .definitions."msa.APIError" = .definitions."msaspec.Error"
+      | del(.definitions."msaspec.Error")
+    end
+  # Rename msaspec.Paging to msa.Paging
+  | if .definitions."msa.Paging" then
+      del(.definitions."msaspec.Paging")
+    else
+      .definitions."msa.Paging" = .definitions."msaspec.Paging"
+      | del(.definitions."msaspec.Paging")
+    end
   # Rename msaspec.Paging to msa.Paging. These are two names for the same type.
   | walk(
     if type == "object" and has("$ref") and ."$ref" == "#/definitions/msaspec.Paging" then ."$ref" = "#/definitions/msa.Paging" else . end
@@ -21,8 +34,13 @@
   | del(.definitions."msaspec.Paging")
   | .definitions."domain.RuleMetaInfo".properties.pagination."$ref" = "#/definitions/msa.Paging"
   | .definitions."domain.MsaMetaInfo".properties.pagination."$ref" = "#/definitions/msa.Paging"
-  # Rename msaspec.MetaInfo to msa.MetaInfo. These are two names for the same type.
-  | del(.definitions."msaspec.MetaInfo")
+  # Rename msaspec.MetaInfo to msa.MetaInfo if msa.MetaInfo doesn't exist
+  | if .definitions."msa.MetaInfo" then
+      del(.definitions."msaspec.MetaInfo")
+    else
+      .definitions."msa.MetaInfo" = .definitions."msaspec.MetaInfo"
+      | del(.definitions."msaspec.MetaInfo")
+    end
 
   # Misc fixes
   | .paths."/intel/entities/rules-latest-files/v1".get.parameters |= . + [{type: "string", description: "Download Only if changed since", name: "If-Modified-Since", "in": "header"}]
@@ -680,4 +698,4 @@
 
 # Add 400 error response to GET /policy/entities/prevention/v1
 | .paths."/policy/entities/prevention/v1".get.responses."400" = .paths."/policy/entities/prevention/v1".get.responses."404"
-| .paths."/policy/entities/prevention/v1".get.responses."400".description = "Bad Request" 
+| .paths."/policy/entities/prevention/v1".get.responses."400".description = "Bad Request"
