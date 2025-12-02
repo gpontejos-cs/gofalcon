@@ -34,7 +34,7 @@ type ClientService interface {
 
 	CreateComplianceFramework(params *CreateComplianceFrameworkParams, opts ...ClientOption) (*CreateComplianceFrameworkOK, error)
 
-	CreateRuleMixin0(params *CreateRuleMixin0Params, opts ...ClientOption) (*CreateRuleMixin0OK, error)
+	CreateRule(params *CreateRuleParams, opts ...ClientOption) (*CreateRuleOK, error)
 
 	CreateRuleOverride(params *CreateRuleOverrideParams, opts ...ClientOption) (*CreateRuleOverrideOK, error)
 
@@ -42,7 +42,7 @@ type ClientService interface {
 
 	DeleteComplianceFramework(params *DeleteComplianceFrameworkParams, opts ...ClientOption) (*DeleteComplianceFrameworkOK, error)
 
-	DeleteRuleMixin0(params *DeleteRuleMixin0Params, opts ...ClientOption) (*DeleteRuleMixin0OK, error)
+	DeleteRule(params *DeleteRuleParams, opts ...ClientOption) (*DeleteRuleOK, error)
 
 	DeleteRuleOverride(params *DeleteRuleOverrideParams, opts ...ClientOption) (*DeleteRuleOverrideOK, *DeleteRuleOverrideNoContent, error)
 
@@ -164,22 +164,22 @@ func (a *Client) CreateComplianceFramework(params *CreateComplianceFrameworkPara
 }
 
 /*
-CreateRuleMixin0 creates a new rule
+CreateRule creates a new rule
 */
-func (a *Client) CreateRuleMixin0(params *CreateRuleMixin0Params, opts ...ClientOption) (*CreateRuleMixin0OK, error) {
+func (a *Client) CreateRule(params *CreateRuleParams, opts ...ClientOption) (*CreateRuleOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewCreateRuleMixin0Params()
+		params = NewCreateRuleParams()
 	}
 	op := &runtime.ClientOperation{
-		ID:                 "CreateRuleMixin0",
+		ID:                 "CreateRule",
 		Method:             "POST",
 		PathPattern:        "/cloud-policies/entities/rules/v1",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &CreateRuleMixin0Reader{formats: a.formats},
+		Reader:             &CreateRuleReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	}
@@ -191,13 +191,13 @@ func (a *Client) CreateRuleMixin0(params *CreateRuleMixin0Params, opts ...Client
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*CreateRuleMixin0OK)
+	success, ok := result.(*CreateRuleOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for CreateRuleMixin0: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	msg := fmt.Sprintf("unexpected success response for CreateRule: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
@@ -316,22 +316,22 @@ func (a *Client) DeleteComplianceFramework(params *DeleteComplianceFrameworkPara
 }
 
 /*
-DeleteRuleMixin0 deletes a rule
+DeleteRule deletes a rule
 */
-func (a *Client) DeleteRuleMixin0(params *DeleteRuleMixin0Params, opts ...ClientOption) (*DeleteRuleMixin0OK, error) {
+func (a *Client) DeleteRule(params *DeleteRuleParams, opts ...ClientOption) (*DeleteRuleOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewDeleteRuleMixin0Params()
+		params = NewDeleteRuleParams()
 	}
 	op := &runtime.ClientOperation{
-		ID:                 "DeleteRuleMixin0",
+		ID:                 "DeleteRule",
 		Method:             "DELETE",
 		PathPattern:        "/cloud-policies/entities/rules/v1",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &DeleteRuleMixin0Reader{formats: a.formats},
+		Reader:             &DeleteRuleReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	}
@@ -343,13 +343,13 @@ func (a *Client) DeleteRuleMixin0(params *DeleteRuleMixin0Params, opts ...Client
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*DeleteRuleMixin0OK)
+	success, ok := result.(*DeleteRuleOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for DeleteRuleMixin0: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	msg := fmt.Sprintf("unexpected success response for DeleteRule: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
