@@ -48,13 +48,13 @@ func FalconContainerUploadURI(falconCloud CloudType) string {
 func FalconContainerSensorImageURI(falconCloud CloudType, sensorType SensorType) string {
 	switch sensorType {
 	case SidecarSensor:
-		return fmt.Sprintf("%s/falcon-container/release/falcon-container", registryFQDN(falconCloud))
+		return fmt.Sprintf("%s/falcon-container/stage/falcon-container", registryFQDN(falconCloud))
 	case RegionedSidecarSensor:
 		return fmt.Sprintf("%s/falcon-container/%s/release/falcon-sensor", registryFQDN(falconCloud), registryCloud(falconCloud))
 	case ImageSensor:
 		return fmt.Sprintf("%s/falcon-imageanalyzer/%s/release/falcon-imageanalyzer", registryFQDN(falconCloud), registryCloud(falconCloud))
 	case KacSensor:
-		return fmt.Sprintf("%s/falcon-kac/release/falcon-kac", registryFQDN(falconCloud))
+		return fmt.Sprintf("%s/falcon-kac/stage/falcon-kac", registryFQDN(falconCloud))
 	case RegionedKacSensor:
 		return fmt.Sprintf("%s/falcon-kac/%s/release/falcon-kac", registryFQDN(falconCloud), registryCloud(falconCloud))
 	case NodeSensor:
