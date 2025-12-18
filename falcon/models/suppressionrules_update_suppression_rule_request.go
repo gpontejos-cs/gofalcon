@@ -20,7 +20,8 @@ import (
 type SuppressionrulesUpdateSuppressionRuleRequest struct {
 
 	// description
-	Description string `json:"description,omitempty"`
+	// Required: true
+	Description *string `json:"description"`
 
 	// id
 	// Required: true
@@ -42,7 +43,8 @@ type SuppressionrulesUpdateSuppressionRuleRequest struct {
 	ScopeType string `json:"scope_type,omitempty"`
 
 	// suppression comment
-	SuppressionComment string `json:"suppression_comment,omitempty"`
+	// Required: true
+	SuppressionComment *string `json:"suppression_comment"`
 
 	// suppression expiration date
 	SuppressionExpirationDate string `json:"suppression_expiration_date,omitempty"`
@@ -54,6 +56,10 @@ type SuppressionrulesUpdateSuppressionRuleRequest struct {
 // Validate validates this suppressionrules update suppression rule request
 func (m *SuppressionrulesUpdateSuppressionRuleRequest) Validate(formats strfmt.Registry) error {
 	var res []error
+
+	if err := m.validateDescription(formats); err != nil {
+		res = append(res, err)
+	}
 
 	if err := m.validateID(formats); err != nil {
 		res = append(res, err)
@@ -67,9 +73,22 @@ func (m *SuppressionrulesUpdateSuppressionRuleRequest) Validate(formats strfmt.R
 		res = append(res, err)
 	}
 
+	if err := m.validateSuppressionComment(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *SuppressionrulesUpdateSuppressionRuleRequest) validateDescription(formats strfmt.Registry) error {
+
+	if err := validate.Required("description", "body", m.Description); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -115,6 +134,15 @@ func (m *SuppressionrulesUpdateSuppressionRuleRequest) validateScopeAssetFilter(
 			}
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (m *SuppressionrulesUpdateSuppressionRuleRequest) validateSuppressionComment(formats strfmt.Registry) error {
+
+	if err := validate.Required("suppression_comment", "body", m.SuppressionComment); err != nil {
+		return err
 	}
 
 	return nil

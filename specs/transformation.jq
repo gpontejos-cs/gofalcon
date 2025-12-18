@@ -699,3 +699,6 @@
 # Add 400 error response to GET /policy/entities/prevention/v1
 | .paths."/policy/entities/prevention/v1".get.responses."400" = .paths."/policy/entities/prevention/v1".get.responses."404"
 | .paths."/policy/entities/prevention/v1".get.responses."400".description = "Bad Request"
+
+# Remove omitempty from fields that can be set to empty for suppressionrules.UpdateSuppressionRuleRequest
+| .definitions."suppressionrules.UpdateSuppressionRuleRequest".required += ["suppression_comment", "description"]
