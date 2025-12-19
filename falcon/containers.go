@@ -8,12 +8,12 @@ type SensorType string
 
 const (
 	SidecarSensor         SensorType = "falcon-container"
-	RegionedSidecarSensor SensorType = "falcon-container-regioned"
 	ImageSensor           SensorType = "falcon-imageanalyzer"
 	KacSensor             SensorType = "falcon-kac"
-	RegionedKacSensor     SensorType = "falcon-kac-regioned"
 	NodeSensor            SensorType = "falcon-sensor"
 	RegionedNodeSensor    SensorType = "falcon-sensor-regioned"
+	RegionedKacSensor     SensorType = "falcon-kac-regioned"
+	RegionedSidecarSensor SensorType = "falcon-container-regioned"
 	Snapshot              SensorType = "falcon-snapshot"
 	FCSCli                SensorType = "fcs"
 	SHRAController        SensorType = "falcon-jobcontroller"
@@ -49,18 +49,18 @@ func FalconContainerSensorImageURI(falconCloud CloudType, sensorType SensorType)
 	switch sensorType {
 	case SidecarSensor:
 		return fmt.Sprintf("%s/falcon-container/stage/falcon-container", registryFQDN(falconCloud))
-	case RegionedSidecarSensor:
-		return fmt.Sprintf("%s/falcon-container/%s/release/falcon-sensor", registryFQDN(falconCloud), registryCloud(falconCloud))
 	case ImageSensor:
 		return fmt.Sprintf("%s/falcon-imageanalyzer/%s/release/falcon-imageanalyzer", registryFQDN(falconCloud), registryCloud(falconCloud))
 	case KacSensor:
 		return fmt.Sprintf("%s/falcon-kac/stage/falcon-kac", registryFQDN(falconCloud))
-	case RegionedKacSensor:
-		return fmt.Sprintf("%s/falcon-kac/%s/release/falcon-kac", registryFQDN(falconCloud), registryCloud(falconCloud))
 	case NodeSensor:
 		return fmt.Sprintf("%s/falcon-sensor/release/falcon-sensor", registryFQDN(falconCloud))
 	case RegionedNodeSensor:
 		return fmt.Sprintf("%s/falcon-sensor/%s/release/falcon-sensor", registryFQDN(falconCloud), registryCloud(falconCloud))
+	case RegionedKacSensor:
+		return fmt.Sprintf("%s/falcon-kac/%s/release/falcon-kac", registryFQDN(falconCloud), registryCloud(falconCloud))
+	case RegionedSidecarSensor:
+		return fmt.Sprintf("%s/falcon-container/%s/release/falcon-sensor", registryFQDN(falconCloud), registryCloud(falconCloud))
 	case Snapshot:
 		return fmt.Sprintf("%s/falcon-snapshot/%s/release/cs-snapshotscanner", registryFQDN(falconCloud), registryCloud(falconCloud))
 	case FCSCli:
