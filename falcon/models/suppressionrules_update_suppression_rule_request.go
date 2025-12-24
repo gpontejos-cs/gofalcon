@@ -20,7 +20,6 @@ import (
 type SuppressionrulesUpdateSuppressionRuleRequest struct {
 
 	// description
-	// Required: true
 	Description *string `json:"description"`
 
 	// id
@@ -43,7 +42,6 @@ type SuppressionrulesUpdateSuppressionRuleRequest struct {
 	ScopeType string `json:"scope_type,omitempty"`
 
 	// suppression comment
-	// Required: true
 	SuppressionComment *string `json:"suppression_comment"`
 
 	// suppression expiration date
@@ -57,10 +55,6 @@ type SuppressionrulesUpdateSuppressionRuleRequest struct {
 func (m *SuppressionrulesUpdateSuppressionRuleRequest) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateDescription(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := m.validateID(formats); err != nil {
 		res = append(res, err)
 	}
@@ -73,22 +67,9 @@ func (m *SuppressionrulesUpdateSuppressionRuleRequest) Validate(formats strfmt.R
 		res = append(res, err)
 	}
 
-	if err := m.validateSuppressionComment(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *SuppressionrulesUpdateSuppressionRuleRequest) validateDescription(formats strfmt.Registry) error {
-
-	if err := validate.Required("description", "body", m.Description); err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -134,15 +115,6 @@ func (m *SuppressionrulesUpdateSuppressionRuleRequest) validateScopeAssetFilter(
 			}
 			return err
 		}
-	}
-
-	return nil
-}
-
-func (m *SuppressionrulesUpdateSuppressionRuleRequest) validateSuppressionComment(formats strfmt.Registry) error {
-
-	if err := validate.Required("suppression_comment", "body", m.SuppressionComment); err != nil {
-		return err
 	}
 
 	return nil

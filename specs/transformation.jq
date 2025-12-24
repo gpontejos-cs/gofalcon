@@ -700,5 +700,6 @@
 | .paths."/policy/entities/prevention/v1".get.responses."400" = .paths."/policy/entities/prevention/v1".get.responses."404"
 | .paths."/policy/entities/prevention/v1".get.responses."400".description = "Bad Request"
 
-# Remove omitempty from fields that can be set to empty for suppressionrules.UpdateSuppressionRuleRequest
-| .definitions."suppressionrules.UpdateSuppressionRuleRequest".required += ["suppression_comment", "description"]
+# Make fields nullable and prevent omitempty for suppressionrules.UpdateSuppressionRuleRequest (allows empty string to be sent when set)
+| .definitions."suppressionrules.UpdateSuppressionRuleRequest".properties.suppression_comment += {"x-nullable": true, "x-omitempty": false}
+| .definitions."suppressionrules.UpdateSuppressionRuleRequest".properties.description += {"x-nullable": true, "x-omitempty": false}
