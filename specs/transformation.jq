@@ -32,11 +32,35 @@
       else . end
     else . end
     )
-  | del(.definitions."msaspec.Error")
+  # Rename msaspec.Error to msa.APIError
+  | if .definitions."msa.APIError" then
+      del(.definitions."msaspec.Error")
+    else
+      .definitions."msa.APIError" = .definitions."msaspec.Error"
+      | del(.definitions."msaspec.Error")
+    end
+  # Rename msaspec.Paging to msa.Paging
+  | if .definitions."msa.Paging" then
+      del(.definitions."msaspec.Paging")
+    else
+      .definitions."msa.Paging" = .definitions."msaspec.Paging"
+      | del(.definitions."msaspec.Paging")
+    end
+  # Rename msaspec.Paging to msa.Paging. These are two names for the same type.
+  | walk(
+    if type == "object" and has("$ref") and ."$ref" == "#/definitions/msaspec.Paging" then ."$ref" = "#/definitions/msa.Paging" else . end
+    )
   | del(.definitions."msaspec.Paging")
   | del(.definitions."msaspec.MetaInfo")
   | .definitions."domain.RuleMetaInfo".properties.pagination."$ref" = "#/definitions/msa.Paging"
   | .definitions."domain.MsaMetaInfo".properties.pagination."$ref" = "#/definitions/msa.Paging"
+  # Rename msaspec.MetaInfo to msa.MetaInfo if msa.MetaInfo doesn't exist
+  | if .definitions."msa.MetaInfo" then
+      del(.definitions."msaspec.MetaInfo")
+    else
+      .definitions."msa.MetaInfo" = .definitions."msaspec.MetaInfo"
+      | del(.definitions."msaspec.MetaInfo")
+    end
 
 # Misc fixes
   | .paths."/intel/entities/rules-latest-files/v1".get.parameters |= . + [{type: "string", description: "Download Only if changed since", name: "If-Modified-Since", "in": "header"}]
@@ -696,15 +720,6 @@
 | .paths."/policy/entities/prevention/v1".get.responses."400" = .paths."/policy/entities/prevention/v1".get.responses."404"
 | .paths."/policy/entities/prevention/v1".get.responses."400".description = "Bad Request"
 
-# Make GCP registration fields nullable for dto.CreateGCPRegistrationRequest and dto.UpdateGCPRegistrationRequest
-| .definitions."dto.CreateGCPRegistrationRequest".properties.resource_name_prefix += {"x-nullable": true}
-| .definitions."dto.CreateGCPRegistrationRequest".properties.resource_name_suffix += {"x-nullable": true}
-
-| .definitions."dto.UpdateGCPRegistrationRequest".properties.log_ingestion_sink_name += {"x-nullable": true}
-| .definitions."dto.UpdateGCPRegistrationRequest".properties.log_ingestion_subscription_name += {"x-nullable": true}
-| .definitions."dto.UpdateGCPRegistrationRequest".properties.log_ingestion_topic_id += {"x-nullable": true}
-| .definitions."dto.UpdateGCPRegistrationRequest".properties.resource_name_prefix += {"x-nullable": true}
-| .definitions."dto.UpdateGCPRegistrationRequest".properties.resource_name_suffix += {"x-nullable": true}
-| .definitions."dto.UpdateGCPRegistrationRequest".properties.wif_pool_name += {"x-nullable": true}
-| .definitions."dto.UpdateGCPRegistrationRequest".properties.wif_provider_name += {"x-nullable": true}
-| .definitions."dto.UpdateGCPRegistrationRequest".required = []
+# Make fields nullable and prevent omitempty for suppressionrules.UpdateSuppressionRuleRequest (allows empty string to be sent when set)
+| .definitions."suppressionrules.UpdateSuppressionRuleRequest".properties.suppression_comment += {"x-nullable": true, "x-omitempty": false}
+| .definitions."suppressionrules.UpdateSuppressionRuleRequest".properties.description += {"x-nullable": true, "x-omitempty": false}
