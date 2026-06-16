@@ -63,6 +63,24 @@ CreateRuleMixin0Params contains all the parameters to send to the API endpoint
 */
 type CreateRuleMixin0Params struct {
 
+	/* Authorization.
+
+	   Bearer Token
+	*/
+	Authorization string
+
+	/* XCSCUSTID.
+
+	   Customer ID
+	*/
+	XCSCUSTID string
+
+	/* XCSUSERUUID.
+
+	   User UUID
+	*/
+	XCSUSERUUID string
+
 	/* Body.
 
 	     Rule severity integer to provide maps to the following: 0=Critical, 1=High, 2=Medium and 3=Low.
@@ -125,6 +143,39 @@ func (o *CreateRuleMixin0Params) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithAuthorization adds the authorization to the create rule mixin0 params
+func (o *CreateRuleMixin0Params) WithAuthorization(authorization string) *CreateRuleMixin0Params {
+	o.SetAuthorization(authorization)
+	return o
+}
+
+// SetAuthorization adds the authorization to the create rule mixin0 params
+func (o *CreateRuleMixin0Params) SetAuthorization(authorization string) {
+	o.Authorization = authorization
+}
+
+// WithXCSCUSTID adds the xCSCUSTID to the create rule mixin0 params
+func (o *CreateRuleMixin0Params) WithXCSCUSTID(xCSCUSTID string) *CreateRuleMixin0Params {
+	o.SetXCSCUSTID(xCSCUSTID)
+	return o
+}
+
+// SetXCSCUSTID adds the xCSCUSTId to the create rule mixin0 params
+func (o *CreateRuleMixin0Params) SetXCSCUSTID(xCSCUSTID string) {
+	o.XCSCUSTID = xCSCUSTID
+}
+
+// WithXCSUSERUUID adds the xCSUSERUUID to the create rule mixin0 params
+func (o *CreateRuleMixin0Params) WithXCSUSERUUID(xCSUSERUUID string) *CreateRuleMixin0Params {
+	o.SetXCSUSERUUID(xCSUSERUUID)
+	return o
+}
+
+// SetXCSUSERUUID adds the xCSUSERUuid to the create rule mixin0 params
+func (o *CreateRuleMixin0Params) SetXCSUSERUUID(xCSUSERUUID string) {
+	o.XCSUSERUUID = xCSUSERUUID
+}
+
 // WithBody adds the body to the create rule mixin0 params
 func (o *CreateRuleMixin0Params) WithBody(body *models.CommonCreateRuleRequest) *CreateRuleMixin0Params {
 	o.SetBody(body)
@@ -143,6 +194,21 @@ func (o *CreateRuleMixin0Params) WriteToRequest(r runtime.ClientRequest, reg str
 		return err
 	}
 	var res []error
+
+	// header param Authorization
+	if err := r.SetHeaderParam("Authorization", o.Authorization); err != nil {
+		return err
+	}
+
+	// header param X-CS-CUSTID
+	if err := r.SetHeaderParam("X-CS-CUSTID", o.XCSCUSTID); err != nil {
+		return err
+	}
+
+	// header param X-CS-USERUUID
+	if err := r.SetHeaderParam("X-CS-USERUUID", o.XCSUSERUUID); err != nil {
+		return err
+	}
 	if o.Body != nil {
 		if err := r.SetBodyParam(o.Body); err != nil {
 			return err

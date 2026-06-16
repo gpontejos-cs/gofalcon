@@ -637,6 +637,8 @@
 | .paths."/falconx/queries/submissions/v1".get.operationId = "QuerySubmissions"
 | .paths."/scanner/queries/scans/v1".get.operationId = "QuerySubmissionsMixin0"
 | .paths."/quickscanpro/entities/files/v1".post.operationId = "UploadFileMixin0Mixin93"
+| .paths."/cloud-policies/entities/rules/v1".post.operationId = "CreateRuleMixin0"
+| .paths."/cloud-policies/entities/rules/v1".delete.operationId = "DeleteRuleMixin0"
 | .paths."/oauth2/token".post.responses."400".schema = {"$ref": "#/definitions/msa.ReplyMetaOnly"}
 | .paths."/oauth2/token".post.responses."403".schema = {"$ref": "#/definitions/msa.ReplyMetaOnly"}
 | .paths."/oauth2/token".post.responses."500".schema = {"$ref": "#/definitions/msa.ReplyMetaOnly"}
