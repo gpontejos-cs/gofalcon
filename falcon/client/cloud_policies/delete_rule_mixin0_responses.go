@@ -9,8 +9,10 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 
 	"github.com/crowdstrike/gofalcon/falcon/models"
 )
@@ -29,8 +31,20 @@ func (o *DeleteRuleMixin0Reader) ReadResponse(response runtime.ClientResponse, c
 			return nil, err
 		}
 		return result, nil
+	case 403:
+		result := NewDeleteRuleMixin0Forbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 404:
 		result := NewDeleteRuleMixin0NotFound()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+	case 429:
+		result := NewDeleteRuleMixin0TooManyRequests()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -57,6 +71,19 @@ DeleteRuleMixin0OK describes a response with status code 200, with default heade
 OK
 */
 type DeleteRuleMixin0OK struct {
+
+	/* Trace-ID: submit to support if resolving an issue
+	 */
+	XCSTRACEID string
+
+	/* Request limit per minute.
+	 */
+	XRateLimitLimit int64
+
+	/* The number of requests remaining for the sliding one minute window.
+	 */
+	XRateLimitRemaining int64
+
 	Payload *models.CommonDeleteRuleResponse
 }
 
@@ -104,7 +131,146 @@ func (o *DeleteRuleMixin0OK) GetPayload() *models.CommonDeleteRuleResponse {
 
 func (o *DeleteRuleMixin0OK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
+	// hydrates response header X-CS-TRACEID
+	hdrXCSTRACEID := response.GetHeader("X-CS-TRACEID")
+
+	if hdrXCSTRACEID != "" {
+		o.XCSTRACEID = hdrXCSTRACEID
+	}
+
+	// hydrates response header X-RateLimit-Limit
+	hdrXRateLimitLimit := response.GetHeader("X-RateLimit-Limit")
+
+	if hdrXRateLimitLimit != "" {
+		valxRateLimitLimit, err := swag.ConvertInt64(hdrXRateLimitLimit)
+		if err != nil {
+			return errors.InvalidType("X-RateLimit-Limit", "header", "int64", hdrXRateLimitLimit)
+		}
+		o.XRateLimitLimit = valxRateLimitLimit
+	}
+
+	// hydrates response header X-RateLimit-Remaining
+	hdrXRateLimitRemaining := response.GetHeader("X-RateLimit-Remaining")
+
+	if hdrXRateLimitRemaining != "" {
+		valxRateLimitRemaining, err := swag.ConvertInt64(hdrXRateLimitRemaining)
+		if err != nil {
+			return errors.InvalidType("X-RateLimit-Remaining", "header", "int64", hdrXRateLimitRemaining)
+		}
+		o.XRateLimitRemaining = valxRateLimitRemaining
+	}
+
 	o.Payload = new(models.CommonDeleteRuleResponse)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewDeleteRuleMixin0Forbidden creates a DeleteRuleMixin0Forbidden with default headers values
+func NewDeleteRuleMixin0Forbidden() *DeleteRuleMixin0Forbidden {
+	return &DeleteRuleMixin0Forbidden{}
+}
+
+/*
+DeleteRuleMixin0Forbidden describes a response with status code 403, with default header values.
+
+Forbidden
+*/
+type DeleteRuleMixin0Forbidden struct {
+
+	/* Trace-ID: submit to support if resolving an issue
+	 */
+	XCSTRACEID string
+
+	/* Request limit per minute.
+	 */
+	XRateLimitLimit int64
+
+	/* The number of requests remaining for the sliding one minute window.
+	 */
+	XRateLimitRemaining int64
+
+	Payload *models.MsaReplyMetaOnly
+}
+
+// IsSuccess returns true when this delete rule mixin0 forbidden response has a 2xx status code
+func (o *DeleteRuleMixin0Forbidden) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this delete rule mixin0 forbidden response has a 3xx status code
+func (o *DeleteRuleMixin0Forbidden) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this delete rule mixin0 forbidden response has a 4xx status code
+func (o *DeleteRuleMixin0Forbidden) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this delete rule mixin0 forbidden response has a 5xx status code
+func (o *DeleteRuleMixin0Forbidden) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this delete rule mixin0 forbidden response a status code equal to that given
+func (o *DeleteRuleMixin0Forbidden) IsCode(code int) bool {
+	return code == 403
+}
+
+// Code gets the status code for the delete rule mixin0 forbidden response
+func (o *DeleteRuleMixin0Forbidden) Code() int {
+	return 403
+}
+
+func (o *DeleteRuleMixin0Forbidden) Error() string {
+	return fmt.Sprintf("[DELETE /cloud-policies/entities/rules/v1][%d] deleteRuleMixin0Forbidden  %+v", 403, o.Payload)
+}
+
+func (o *DeleteRuleMixin0Forbidden) String() string {
+	return fmt.Sprintf("[DELETE /cloud-policies/entities/rules/v1][%d] deleteRuleMixin0Forbidden  %+v", 403, o.Payload)
+}
+
+func (o *DeleteRuleMixin0Forbidden) GetPayload() *models.MsaReplyMetaOnly {
+	return o.Payload
+}
+
+func (o *DeleteRuleMixin0Forbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// hydrates response header X-CS-TRACEID
+	hdrXCSTRACEID := response.GetHeader("X-CS-TRACEID")
+
+	if hdrXCSTRACEID != "" {
+		o.XCSTRACEID = hdrXCSTRACEID
+	}
+
+	// hydrates response header X-RateLimit-Limit
+	hdrXRateLimitLimit := response.GetHeader("X-RateLimit-Limit")
+
+	if hdrXRateLimitLimit != "" {
+		valxRateLimitLimit, err := swag.ConvertInt64(hdrXRateLimitLimit)
+		if err != nil {
+			return errors.InvalidType("X-RateLimit-Limit", "header", "int64", hdrXRateLimitLimit)
+		}
+		o.XRateLimitLimit = valxRateLimitLimit
+	}
+
+	// hydrates response header X-RateLimit-Remaining
+	hdrXRateLimitRemaining := response.GetHeader("X-RateLimit-Remaining")
+
+	if hdrXRateLimitRemaining != "" {
+		valxRateLimitRemaining, err := swag.ConvertInt64(hdrXRateLimitRemaining)
+		if err != nil {
+			return errors.InvalidType("X-RateLimit-Remaining", "header", "int64", hdrXRateLimitRemaining)
+		}
+		o.XRateLimitRemaining = valxRateLimitRemaining
+	}
+
+	o.Payload = new(models.MsaReplyMetaOnly)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -125,6 +291,19 @@ DeleteRuleMixin0NotFound describes a response with status code 404, with default
 Not Found
 */
 type DeleteRuleMixin0NotFound struct {
+
+	/* Trace-ID: submit to support if resolving an issue
+	 */
+	XCSTRACEID string
+
+	/* Request limit per minute.
+	 */
+	XRateLimitLimit int64
+
+	/* The number of requests remaining for the sliding one minute window.
+	 */
+	XRateLimitRemaining int64
+
 	Payload *models.CommonDeleteRuleResponse
 }
 
@@ -172,7 +351,161 @@ func (o *DeleteRuleMixin0NotFound) GetPayload() *models.CommonDeleteRuleResponse
 
 func (o *DeleteRuleMixin0NotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
+	// hydrates response header X-CS-TRACEID
+	hdrXCSTRACEID := response.GetHeader("X-CS-TRACEID")
+
+	if hdrXCSTRACEID != "" {
+		o.XCSTRACEID = hdrXCSTRACEID
+	}
+
+	// hydrates response header X-RateLimit-Limit
+	hdrXRateLimitLimit := response.GetHeader("X-RateLimit-Limit")
+
+	if hdrXRateLimitLimit != "" {
+		valxRateLimitLimit, err := swag.ConvertInt64(hdrXRateLimitLimit)
+		if err != nil {
+			return errors.InvalidType("X-RateLimit-Limit", "header", "int64", hdrXRateLimitLimit)
+		}
+		o.XRateLimitLimit = valxRateLimitLimit
+	}
+
+	// hydrates response header X-RateLimit-Remaining
+	hdrXRateLimitRemaining := response.GetHeader("X-RateLimit-Remaining")
+
+	if hdrXRateLimitRemaining != "" {
+		valxRateLimitRemaining, err := swag.ConvertInt64(hdrXRateLimitRemaining)
+		if err != nil {
+			return errors.InvalidType("X-RateLimit-Remaining", "header", "int64", hdrXRateLimitRemaining)
+		}
+		o.XRateLimitRemaining = valxRateLimitRemaining
+	}
+
 	o.Payload = new(models.CommonDeleteRuleResponse)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewDeleteRuleMixin0TooManyRequests creates a DeleteRuleMixin0TooManyRequests with default headers values
+func NewDeleteRuleMixin0TooManyRequests() *DeleteRuleMixin0TooManyRequests {
+	return &DeleteRuleMixin0TooManyRequests{}
+}
+
+/*
+DeleteRuleMixin0TooManyRequests describes a response with status code 429, with default header values.
+
+Too Many Requests
+*/
+type DeleteRuleMixin0TooManyRequests struct {
+
+	/* Trace-ID: submit to support if resolving an issue
+	 */
+	XCSTRACEID string
+
+	/* Request limit per minute.
+	 */
+	XRateLimitLimit int64
+
+	/* The number of requests remaining for the sliding one minute window.
+	 */
+	XRateLimitRemaining int64
+
+	/* Too many requests, retry after this time (as milliseconds since epoch)
+	 */
+	XRateLimitRetryAfter int64
+
+	Payload *models.MsaReplyMetaOnly
+}
+
+// IsSuccess returns true when this delete rule mixin0 too many requests response has a 2xx status code
+func (o *DeleteRuleMixin0TooManyRequests) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this delete rule mixin0 too many requests response has a 3xx status code
+func (o *DeleteRuleMixin0TooManyRequests) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this delete rule mixin0 too many requests response has a 4xx status code
+func (o *DeleteRuleMixin0TooManyRequests) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this delete rule mixin0 too many requests response has a 5xx status code
+func (o *DeleteRuleMixin0TooManyRequests) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this delete rule mixin0 too many requests response a status code equal to that given
+func (o *DeleteRuleMixin0TooManyRequests) IsCode(code int) bool {
+	return code == 429
+}
+
+// Code gets the status code for the delete rule mixin0 too many requests response
+func (o *DeleteRuleMixin0TooManyRequests) Code() int {
+	return 429
+}
+
+func (o *DeleteRuleMixin0TooManyRequests) Error() string {
+	return fmt.Sprintf("[DELETE /cloud-policies/entities/rules/v1][%d] deleteRuleMixin0TooManyRequests  %+v", 429, o.Payload)
+}
+
+func (o *DeleteRuleMixin0TooManyRequests) String() string {
+	return fmt.Sprintf("[DELETE /cloud-policies/entities/rules/v1][%d] deleteRuleMixin0TooManyRequests  %+v", 429, o.Payload)
+}
+
+func (o *DeleteRuleMixin0TooManyRequests) GetPayload() *models.MsaReplyMetaOnly {
+	return o.Payload
+}
+
+func (o *DeleteRuleMixin0TooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// hydrates response header X-CS-TRACEID
+	hdrXCSTRACEID := response.GetHeader("X-CS-TRACEID")
+
+	if hdrXCSTRACEID != "" {
+		o.XCSTRACEID = hdrXCSTRACEID
+	}
+
+	// hydrates response header X-RateLimit-Limit
+	hdrXRateLimitLimit := response.GetHeader("X-RateLimit-Limit")
+
+	if hdrXRateLimitLimit != "" {
+		valxRateLimitLimit, err := swag.ConvertInt64(hdrXRateLimitLimit)
+		if err != nil {
+			return errors.InvalidType("X-RateLimit-Limit", "header", "int64", hdrXRateLimitLimit)
+		}
+		o.XRateLimitLimit = valxRateLimitLimit
+	}
+
+	// hydrates response header X-RateLimit-Remaining
+	hdrXRateLimitRemaining := response.GetHeader("X-RateLimit-Remaining")
+
+	if hdrXRateLimitRemaining != "" {
+		valxRateLimitRemaining, err := swag.ConvertInt64(hdrXRateLimitRemaining)
+		if err != nil {
+			return errors.InvalidType("X-RateLimit-Remaining", "header", "int64", hdrXRateLimitRemaining)
+		}
+		o.XRateLimitRemaining = valxRateLimitRemaining
+	}
+
+	// hydrates response header X-RateLimit-RetryAfter
+	hdrXRateLimitRetryAfter := response.GetHeader("X-RateLimit-RetryAfter")
+
+	if hdrXRateLimitRetryAfter != "" {
+		valxRateLimitRetryAfter, err := swag.ConvertInt64(hdrXRateLimitRetryAfter)
+		if err != nil {
+			return errors.InvalidType("X-RateLimit-RetryAfter", "header", "int64", hdrXRateLimitRetryAfter)
+		}
+		o.XRateLimitRetryAfter = valxRateLimitRetryAfter
+	}
+
+	o.Payload = new(models.MsaReplyMetaOnly)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -193,6 +526,19 @@ DeleteRuleMixin0InternalServerError describes a response with status code 500, w
 Internal Server Error
 */
 type DeleteRuleMixin0InternalServerError struct {
+
+	/* Trace-ID: submit to support if resolving an issue
+	 */
+	XCSTRACEID string
+
+	/* Request limit per minute.
+	 */
+	XRateLimitLimit int64
+
+	/* The number of requests remaining for the sliding one minute window.
+	 */
+	XRateLimitRemaining int64
+
 	Payload *models.CommonEntitiesResponse
 }
 
@@ -239,6 +585,35 @@ func (o *DeleteRuleMixin0InternalServerError) GetPayload() *models.CommonEntitie
 }
 
 func (o *DeleteRuleMixin0InternalServerError) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// hydrates response header X-CS-TRACEID
+	hdrXCSTRACEID := response.GetHeader("X-CS-TRACEID")
+
+	if hdrXCSTRACEID != "" {
+		o.XCSTRACEID = hdrXCSTRACEID
+	}
+
+	// hydrates response header X-RateLimit-Limit
+	hdrXRateLimitLimit := response.GetHeader("X-RateLimit-Limit")
+
+	if hdrXRateLimitLimit != "" {
+		valxRateLimitLimit, err := swag.ConvertInt64(hdrXRateLimitLimit)
+		if err != nil {
+			return errors.InvalidType("X-RateLimit-Limit", "header", "int64", hdrXRateLimitLimit)
+		}
+		o.XRateLimitLimit = valxRateLimitLimit
+	}
+
+	// hydrates response header X-RateLimit-Remaining
+	hdrXRateLimitRemaining := response.GetHeader("X-RateLimit-Remaining")
+
+	if hdrXRateLimitRemaining != "" {
+		valxRateLimitRemaining, err := swag.ConvertInt64(hdrXRateLimitRemaining)
+		if err != nil {
+			return errors.InvalidType("X-RateLimit-Remaining", "header", "int64", hdrXRateLimitRemaining)
+		}
+		o.XRateLimitRemaining = valxRateLimitRemaining
+	}
 
 	o.Payload = new(models.CommonEntitiesResponse)
 
