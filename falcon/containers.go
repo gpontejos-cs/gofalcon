@@ -19,6 +19,7 @@ const (
 	FCSCli                SensorType = "fcs"
 	SHRAController        SensorType = "falcon-jobcontroller"
 	SHRAExecutor          SensorType = "falcon-registryassessmentexecutor"
+	ClusterGuardSensor    SensorType = "falcon-clusterguard"
 )
 
 // FalconContainerUploadURI parses cloud string (example: us-1, us-2, eu-1, us-gov-1, etc) and returns a URI for uploading a container image for ImageAssessment.
@@ -74,6 +75,8 @@ func FalconContainerSensorImageURI(falconCloud CloudType, sensorType SensorType)
 		return fmt.Sprintf("%s/falcon-selfhostedregistryassessment/release/falcon-jobcontroller", registryFQDN(falconCloud))
 	case SHRAExecutor:
 		return fmt.Sprintf("%s/falcon-selfhostedregistryassessment/release/falcon-registryassessmentexecutor", registryFQDN(falconCloud))
+	case ClusterGuardSensor:
+		return fmt.Sprintf("%s/falcon-clusterguard/release/falcon-clusterguard", registryFQDN(falconCloud))
 	default:
 		return fmt.Sprintf("%s/falcon-sensor/release/falcon-sensor", registryFQDN(falconCloud))
 	}
